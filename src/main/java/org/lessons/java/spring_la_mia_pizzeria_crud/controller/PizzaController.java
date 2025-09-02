@@ -3,7 +3,9 @@ package org.lessons.java.spring_la_mia_pizzeria_crud.controller;
 import java.util.List;
 
 import org.lessons.java.spring_la_mia_pizzeria_crud.model.Pizza;
+import org.lessons.java.spring_la_mia_pizzeria_crud.model.SpecialOffer;
 import org.lessons.java.spring_la_mia_pizzeria_crud.repository.PizzaRepository;
+import org.lessons.java.spring_la_mia_pizzeria_crud.repository.SpecialOfferRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +25,9 @@ public class PizzaController {
 
     @Autowired
     private PizzaRepository repository;
+
+    @Autowired
+    private SpecialOfferRepository offerRepository;
 
     // INDEX
     @GetMapping
@@ -87,19 +92,24 @@ public class PizzaController {
     }
 
     // DELETE
+    // MODIFICATA PER ELIMINARE LE OFFERTE INSIEME ALLA PIZZA
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable Integer id) {
-        repository.deleteById(id);
+        Pizza pizza = repository.findById(id).get();
+        for (SpecialOffer offerToDelete : pizza.getSpecialOffers()) {
+            offerRepository.delete(offerToDelete);
+        }
+        repository.delete(pizza);
         return "redirect:/pizzas";
     }
-    // QUERY CUSTOM TROVAPIZZADALNOME --> spostata direttamete nella index ^
-    // @GetMapping("/searchByName")
-    // public String searchByName(@RequestParam(name = "name") String name, Model
-    // model) {
 
-    // List<Pizza> pizzas = repository.findByNameContaining(name);
-    // model.addAttribute("pizzas", pizzas);
-    // return "pizzas/index";
-    // }
+    // ONETOMANY OFFERTE SPECIALI
+    @GetMapping("/{id}/special-offers")
+    public String specialOffer(@PathVariable Integer id, Model model) {
+        SpecialOffer specialOffer = new SpecialOffer();
+        specialOffer.setPizza(repository.findById(id).get());
+        model.addAttribute("specialOffer", specialOffer);
+        return "special-offers/create-or-edit";
+    }
 
 }
