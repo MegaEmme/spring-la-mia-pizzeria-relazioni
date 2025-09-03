@@ -24,6 +24,7 @@
                                 th:object="${specialOffer}" method="post">
                                 <!-- QUI NASCONDO I DATI DEL MIO LIBRO  -->
                                 <input type="hidden" th:field="*{pizza}" id="linked-specialOffer">
+                                <input type="hidden" th:field="*{id}">
                                 <!-- NOME  -->
                                 <div class="mb-3">
                                     <label class="form-label" for="offer-name">Nome Offerta:</label>
