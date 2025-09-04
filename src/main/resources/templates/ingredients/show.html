@@ -3,12 +3,14 @@
 
 <head>
     <div th:replace="~{fragments/resources :: headTags}"></div>
-    <title>Pizza: [[${pizza.name}]]</title>
+    <title>Ingredienti</title>
 </head>
 
 <body>
-    <nav th:replace="~{fragments/navbar :: navbar('Pizza Singola')}"></nav>
-    <main class="container p-4" th:object="${pizza}">
+    <nav th:replace="~{fragments/navbar :: navbar('Lista Ingredienti')}"></nav>
+
+    <main class="container p-4">
+        <h1 class="text-center fw-bold mb-4">Ingredienti</h1>
         <div class="card shadow-lg p-0 mb-3">
             <div class="row g-0">
                 <div class="col-md-5 p-2">
@@ -63,36 +65,35 @@
                                 <a th:href="@{/special-offers/edit/{id}(id = ${specialOffer.id})}"
                                     class="btn btn-success btn-sm">Modifica</a>
                             </td>
-                            <td class="p-4">
-
+                            <!-- <td class="p-4">
+                               
                                 <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                    th:data-bs-target="'#delete-modal-' + ${specialOffer.id}">
+                                    th:data-bs-target="'#delete-modal-' + ${pizza.id}">
                                     Elimina
                                 </button>
-
-                                <div class="modal fade" th:id="'delete-modal-' + ${specialOffer.id}" tabindex="-1"
+                               
+                                <div class="modal fade" th:id="'delete-modal-' + ${pizza.id}" tabindex="-1"
                                     aria-labelledby="delete-modal" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog modal-dialog-centered">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h1 class="modal-title fs-5" id="exampleModalLabel">
-                                                    Rimuovendo "[[${specialOffer.offerName}]]"
+                                                    Rimuovendo "[[${pizza.name}]]"
                                                 </h1>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                Sei sicuro di voler rimuovere l'offerta speciale
-                                                <strong>"[[${specialOffer.offerName}]]"</strong>?
+                                                Sei sicuro di voler rimuovere la pizza
+                                                <strong>"[[${pizza.name}]]"</strong>?
                                             </div>
                                             <div class="modal-footer">
-
+                                                
                                                 <button type="button" class="btn btn-secondary"
                                                     data-bs-dismiss="modal">Chiudi</button>
-
+                                               
                                                 <form class="d-inline-block"
-                                                    th:action="@{/special-offers/delete/{id}(id = ${specialOffer.id})}"
-                                                    method="post">
+                                                    th:action="@{/pizzas/delete/{id}(id = ${pizza.id})}" method="post">
                                                     <button type="submit" class="btn btn-danger">
                                                         Elimina
                                                     </button>
@@ -101,13 +102,14 @@
                                         </div>
                                     </div>
                                 </div>
-                            </td>
+                            </td> -->
                         </tr>
                     </tbody>
                 </table>
             </div>
         </section>
     </main>
+
     <div th:replace="~{fragments/resources :: scripts}"></div>
 </body>
 
