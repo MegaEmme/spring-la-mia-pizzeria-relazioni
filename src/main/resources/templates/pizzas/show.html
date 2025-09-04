@@ -27,6 +27,16 @@
         </div>
         <hr />
 
+        <th:block th:if="${pizza.ingredients.size() > 0}">
+            <h3 class="mb-2">Ingredienti:</h3>
+            <ul class="mb-3 ps-4">
+                <li th:each="ingredient : *{ingredients}" th:text="${ingredient.name}" />
+            </ul>
+        </th:block>
+        <th:block th:unless="${pizza.getIngredients().size() > 0}">
+            <p class="mb-3 alert alert-info">Questa pizza non ha ingredienti...</p>
+        </th:block>
+
         <section class="row mb-3 special-offers">
             <div class="col-12" th:unless="${pizza.getSpecialOffers().size>0}">
                 <div class="alert alert-warning">
