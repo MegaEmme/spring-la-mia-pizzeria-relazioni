@@ -1,6 +1,7 @@
 package org.lessons.java.spring_la_mia_pizzeria_crud.controller;
 
 import org.lessons.java.spring_la_mia_pizzeria_crud.model.Ingredient;
+import org.lessons.java.spring_la_mia_pizzeria_crud.model.Pizza;
 import org.lessons.java.spring_la_mia_pizzeria_crud.repository.IngredientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -49,6 +50,34 @@ public class IngredientController {
             return "ingredients/create-or-edit";
         }
         ingredientRepository.save(formIngredient);
+        return "redirect:/ingredients";
+    }
+
+    // UPDATE
+    @GetMapping("/edit/{id}")
+    public String edit(@PathVariable("id") Integer id, Model model) {
+        model.addAttribute("ingredient", ingredientRepository.findById(id).get());
+        model.addAttribute("edit", true);
+        return "ingredients/create-or-edit";
+    }
+
+    @PostMapping("/edit/{id}")
+    public String update(@Valid @ModelAttribute Ingredient formIngredient, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "ingredient/create-or-edit";
+        }
+        ingredientRepository.save(formIngredient);
+        return "redirect:/ingredients";
+    }
+
+    // DELETE
+    @PostMapping("delete/{id}")
+    public String delete(@PathVariable("id") Integer id) {
+        Ingredient ingredientToDelete = ingredientRepository.findById(id).get();
+        for (Pizza linkedPizza : ingredientToDelete.getPizzas()) {
+            linkedPizza.getIngredients().remove(ingredientToDelete);
+        }
+        ingredientRepository.delete(ingredientToDelete);
         return "redirect:/ingredients";
     }
 }
